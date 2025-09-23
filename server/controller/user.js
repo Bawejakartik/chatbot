@@ -5,9 +5,15 @@ const bcrypt = require("bcrypt");
 
 exports.signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { fullname, username, email, password, gender } = req.body;
 
-    const existinguser = await User.findOne({ email });
+    if (!fullname || !username || !email || !password || !gender) {
+      return res.status(401).json({
+        success: false,
+        message: "all fields are required",
+      });
+    }
+    const existinguser = await User.findOne({ email, username });
     if (existinguser) {
       return res.status(401).json({
         success: false,
@@ -24,10 +30,15 @@ exports.signup = async (req, res) => {
         message: "error in hashing password",
       });
     }
-
+    //profilephoto
+    const maleprofileimage = `https://avatar.iran.liara.run/public/boy?username=${username}`;
+    const femaleprfileimage = `https://avatar.iran.liara.run/public/girl?username=${username}`;
     const user = await User.create({
-      name,
+      fullname,
+      username,
+      gender,
       email,
+      profileimage: gender === "male" ? maleprofileimage : femaleprfileimage,
       password: hashedpassword,
     });
 
@@ -46,59 +57,83 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    const { email , password } = req.body;
+    const { username, email, password } = req.body;
 
-    if (!password || !email) {
+    if (!username || !password || !email) {
       return res.status(401).json({
         success: false,
         message: "enter the both filled ",
       });
     }
-   let  user = await User.findOne({ email });
+    let user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({
         success: false,
         message: "please register for further process",
       });
     }
- const payload = {
-   id: user._id,
-   email: user.email,
- };
+    const payload = {
+      id: user._id,
+    };
 
     if (await bcrypt.compare(password, user.password)) {
-     
       const token = jwt.sign(payload, process.env.SECRET_KEY, {
         expiresIn: "2h",
-
-      
       });
       const option = {
-        expiresIn:new Date(Date.now()+2*24*60*60*1000),
-        httpOnly:true,
-      }
+        expiresIn: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000),
+        httpOnly: true,
+      };
 
-      res.cookie("token",token,option).status(200).json({
-        success:true,
+      res.cookie("token", token, option).status(200).json({
+        success: true,
         token,
-       message:"user loggedin successfully",
-
-      })
-      
-    }
-    else{
-        return res.status(401).json({
-            success:false,
-            message:"your password is incorrect so please fill the true cridentials"
-        });
-
+        message: "user loggedin successfully",
+      });
+    } else {
+      return res.status(401).json({
+        success: false,
+        message:
+          "your password is incorrect so please fill the true cridentials",
+      });
     }
   } catch (err) {
     console.error(err);
 
     return res.status(501).json({
-        success:false,
-        message:"login failure"
-        })
+      success: false,
+      message: "login failure",
+    });
+  }
+};
+
+exports.logout = (req, res) => {
+  try {
+    const option = {
+      expiresIn: 0,
+    };
+
+    return res.status(200).cookie("token", "", option).json({
+      success: true,
+
+      message: "user logout successfully",
+    });
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+exports.GetOtherUsers = async (req, res) => {
+  try {
+    const loggedinUserid = req.id;
+    const otheruser = await User.find({ _id: { $ne: loggedinUserid } }).select(
+      "-password"
+    );
+    return res.status(200).json({
+      otheruser,
+    });
+  } catch (err) {
+    console.log(err);
+    
   }
 };
