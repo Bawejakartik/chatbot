@@ -32,17 +32,18 @@ exports.signup = async (req, res) => {
     }
     //profilephoto
     const maleprofileimage = `https://avatar.iran.liara.run/public/boy?username=${username}`;
-    const femaleprfileimage = `https://avatar.iran.liara.run/public/girl?username=${username}`;
+    const femaleprofileimage = `https://avatar.iran.liara.run/public/girl?username=${username}`;
     const user = await User.create({
       fullname,
       username,
       gender,
       email,
-      profileimage: gender === "male" ? maleprofileimage : femaleprfileimage,
+      profileimage: gender === "male" ? maleprofileimage : femaleprofileimage,
       password: hashedpassword,
     });
 
     return res.status(200).json({
+      user,
       success: true,
       message: "user created successfully ",
     });
@@ -87,6 +88,8 @@ exports.login = async (req, res) => {
 
       res.cookie("token", token, option).status(200).json({
         success: true,
+        user,
+        
         token,
         message: "user loggedin successfully",
       });

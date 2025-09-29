@@ -27,7 +27,7 @@ const Login = () => {
       if(res.data.success){
         navigate("/");
         console.log(res.data);
-           dispatch(setAuthUser(res.data));
+           dispatch(setAuthUser(res.data.user));
            
         toast.success(res.data.message);
 
@@ -75,6 +75,7 @@ catch(err){
               className="w-full input input-bordered h-10"
               type="email"
               placeholder="Enter your Email"
+              
             />
           </div>
 

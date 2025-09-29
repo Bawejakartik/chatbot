@@ -12,6 +12,7 @@ const Signup = () => {
     email: "",
     gender: "",
     password: "",
+  
   });
 
   const onsubmitHandler = async (e) => {

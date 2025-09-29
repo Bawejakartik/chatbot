@@ -28,11 +28,10 @@ app.use("/api/v8/message",messageRouter);
 
 const PORT = process.env.PORT;
 db.connect();
- 
 
 
 
 app.listen(PORT,async(req , res ) =>{
     await console.log("Server started on the port ",PORT);
 
-})
+});
