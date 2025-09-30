@@ -9,6 +9,9 @@ import Homepage from "./components/Homepage";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import  {io } from 'socket.io-client';
+import Forgetpassword from "./components/Forgetpassword";
+import Verifyotp from "./components/Verifyotp";
+import Setnewpassword from "./components/Setnewpassword";
 
 function App() {
   const { authUser } = useSelector((store) => store.user);
@@ -36,6 +39,17 @@ function App() {
       path: "/login",
       element: <Login />,
     },
+    {
+      path:'/forget-password',
+      element:<Forgetpassword/>
+    },
+    {
+      path:"/verify-otp",
+      element:<Verifyotp/>
+    },{
+      path:"/setnewpassword",
+      element:<Setnewpassword/>
+    }
   ]);
 
   return (

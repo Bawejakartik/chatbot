@@ -75,7 +75,6 @@ catch(err){
               className="w-full input input-bordered h-10"
               type="email"
               placeholder="Enter your Email"
-              
             />
           </div>
 
@@ -86,20 +85,37 @@ catch(err){
             <input
               value={user.password}
               onChange={(e) => setUser({ ...user, password: e.target.value })}
-
               className="w-full input input-bordered h-10"
               type="password"
               placeholder="Enter your Password "
             />
           </div>
 
-          <div className="w-full mx-auto flex p-5">
+          {/* <div className="w-full mx-auto flex p-5">
             <p>Don't have an account ?</p>
             <Link to="/register">Signup</Link>
+            <Link to='/forget-password'>forgetpassword</Link>
+          </div> */}
+          <div className="w-full mx-auto flex justify-between items-center p-5 text-sm">
+            <p>
+              Don't have an account?{" "}
+              <Link
+                to="/register"
+                className="text-blue-600 hover:underline ml-1">
+                Signup
+              </Link>
+            </p>
+            <Link
+              to="/forget-password"
+              className="text-red-500 hover:underline font-medium">
+              Forgot Password?
+            </Link>
           </div>
 
           <div className="flex items-center justify-center">
-            <button type='submit' className="w-80 btn btn-outline btn-primary mt-2 mb-5 border-slate-700">
+            <button
+              type="submit"
+              className="w-80 btn btn-outline btn-primary mt-2 mb-5 border-slate-700">
               Login
             </button>
           </div>
