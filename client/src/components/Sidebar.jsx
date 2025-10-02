@@ -1,11 +1,11 @@
-import React,{use, useState} from "react";
+import React,{ useState} from "react";
 import { IoEllipseSharp, IoSearch } from "react-icons/io5";
 import Otherusers from "./Otherusers";
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import {useNavigate} from 'react-router-dom'
 import { useSelector,useDispatch } from "react-redux";
-import { setOtherUser } from "../redux/usersslice";
+import { setOtherUsers } from "../redux/usersslice";
 
 const Sidebar = () => {
   const {otherUsers} =useSelector(store =>store.user);
@@ -18,7 +18,7 @@ const dispatch = useDispatch();
  
      const conversationuser = otherUsers?.find((user) => user.fullname.toLowerCase().includes(search.toLowerCase()));
      if(conversationuser){
-      dispatch(setOtherUser([conversationuser]));
+      dispatch(setOtherUsers([conversationuser]));
 
      }else{
       toast.error("user not found "); 
@@ -35,6 +35,11 @@ const dispatch = useDispatch();
 console.log(res);
 
    toast.success(res.data.message);
+   dispatch(setAuthUser(null));
+   dispatch(setMessages(null));
+   dispatch(setOtherUsers(null));
+   dispatch(setSelectedUser(null));
+
      
 
     }

@@ -9,8 +9,8 @@ const Otherusers = () => {
   UseGetOtherusers();
   const { otherUsers } = useSelector((store) => store.user);
 
-  //early return in react
-  // if (!otherUsers) return;
+  
+  if (!otherUsers) return;
 if (!otherUsers || !Array.isArray(otherUsers) || otherUsers.length === 0) return null;
   return (
     <div className="overflow-auto flex-1">

@@ -1,37 +1,37 @@
 const express = require("express");
 require("dotenv").config();
-const app = express();
-const db = require("./config/database");
-const User = require("./model/user");
-const Authrouter = require("./routes/Authrouter");
+const http = require("http");
 const cookieParser = require("cookie-parser");
-const messageRouter = require("./routes/messageRoute")
-const cors = require('cors');
+const cors = require("cors");
 
+const Authrouter = require("./routes/Authrouter");
+const messageRouter = require("./routes/messageRoute");
+const db = require("./config/database");
+const { initSocket } = require("./socket/socket");
 
+const app = express();
+const PORT = process.env.PORT || 4000;
 
-app.use(express.urlencoded({extended:true})); 
-
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 
-const corsOption = {
-  origin: "http://localhost:5173",
-  credentials:true
-}; 
+app.use("/api/v8", Authrouter);
+app.use("/api/v8/message", messageRouter);
 
-app.use(cors(corsOption));
+const server = http.createServer(app);
 
-app.use("/api/v8",Authrouter);
-app.use("/api/v8/message",messageRouter); 
 
-const PORT = process.env.PORT;
+initSocket(server);
+
 db.connect();
-
-
-
-app.listen(PORT,async(req , res ) =>{
-    await console.log("Server started on the port ",PORT);
-
+server.listen(PORT, () => {
+  console.log("Server & Socket.io running on port", PORT);
 });

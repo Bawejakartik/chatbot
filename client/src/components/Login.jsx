@@ -25,7 +25,7 @@ const Login = () => {
       withCredentials:true,}
       )
       if(res.data.success){
-        navigate("/");
+        navigate("/homepage");
         console.log(res.data);
            dispatch(setAuthUser(res.data.user));
            

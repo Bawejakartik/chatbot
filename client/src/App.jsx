@@ -7,33 +7,52 @@ import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Homepage from "./components/Homepage";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import  {io } from 'socket.io-client';
+import { useDispatch, useSelector } from "react-redux";
+import  io  from 'socket.io-client';
 import Forgetpassword from "./components/Forgetpassword";
 import Verifyotp from "./components/Verifyotp";
 import Setnewpassword from "./components/Setnewpassword";
+import { setSocket } from "./redux/socketslice";
+import {setOnlineUsers} from "./redux/usersslice";
+import { disconnectSocket, initSocket } from "./socket";
 
 function App() {
   const { authUser } = useSelector((store) => store.user);
-  const [socket, setSocket] = useState(null);
+  const {socket} = useSelector((store)=>store.socket)
+  const dispatch = useDispatch();
+
 
   useEffect(() => {
     if (authUser) {
-      const socket = io("http://localhost:4000/api/v8", {
-        withCredentials: true,
+      const socket =initSocket(authUser._id)
+      // dispatch(setSocket(socket));
+
+      socket.on("getOnlineUsers",(onlineusers) =>{
+        dispatch(setOnlineUsers(onlineusers));
+
       });
-      setSocket(socket);
+    
+       return()=>{
+        disconnectSocket();
+        
+       }
     }
+   
   }, [authUser]);
 
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Homepage />,
+      element: <Signup/>,
     },
     {
+      path:"/homepage",
+      element:<Homepage/>,
+    },
+
+    {
       path: "/register",
-      element: <Signup />,
+      element:<Signup/>,
     },
     {
       path: "/login",

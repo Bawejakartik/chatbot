@@ -3,7 +3,7 @@ import {useDispatch} from 'react-redux';
 
 
 import axios from "axios";
-import { setOtherUser } from "../redux/usersslice";
+import { setOtherUsers } from "../redux/usersslice";
 
 const UseGetOtherusers = () => {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ const UseGetOtherusers = () => {
         // console.log(res);
         //store
         // dispatch(setOtherUser(res.data));
-         dispatch(setOtherUser(res.data.otheruser || []));
+         dispatch(setOtherUsers(res.data.otheruser || []));
       } catch (err) {
         console.log(err);
       }

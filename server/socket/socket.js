@@ -1,30 +1,43 @@
-const {Server}  = require('socket.io');
-const http = require('http');
-const express = require("express");
+let io;
+const usersocketmap = {}; // userId -> socketId
 
+const initSocket = (server) => {
+  const { Server } = require("socket.io");
+  io = new Server(server, {
+    cors: {
+      origin: "http://localhost:5173",
+      methods: ["GET", "POST"],
+      credentials: true,
+    },
+  });
 
+  io.on("connection", (socket) => {
+    console.log("User connected:", socket.id);
 
-const app = express();
+    const UserId = socket.handshake.query.UserId;
+    if (UserId !== undefined) {
+      usersocketmap[UserId] = socket.id;
+    }
 
-const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: `http://localhost:5173`,
-    methods:['GET','POST'],
-    credentials:true,
+    io.emit("getOnlineUsers", Object.keys(usersocketmap));
 
+    socket.on("sendMessage", (data) => {
+      console.log("New message:", data);
+      io.emit("receiveMessage", data);
+    });
 
+    socket.on("disconnect", () => {
+      console.log("User disconnected:", socket.id);
+      delete usersocketmap[UserId];
+      io.emit("getOnlineUsers", Object.keys(usersocketmap));
+    });
+  });
+};
 
-  },
-});
+const getReceiverSocketId = (receiverId) => {
+  return usersocketmap[receiverId];
+};
 
-io.on('connection',(Socket) =>{
-    console.log("user connected ",Socket.id);
+const getIo = () => io;
 
-})
-server.listen(4000,()=>{
-    console.log("server running on port 4000");
-
-})
-
-module.exports = {app,io}
+module.exports = { initSocket, getReceiverSocketId, getIo };
