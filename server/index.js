@@ -8,6 +8,7 @@ const Authrouter = require("./routes/Authrouter");
 const messageRouter = require("./routes/messageRoute");
 const db = require("./config/database");
 const { initSocket } = require("./socket/socket");
+const { error } = require("console");
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -25,7 +26,13 @@ app.use(
 
 app.use("/api/v8", Authrouter);
 app.use("/api/v8/message", messageRouter);
+app.get("/",(req,res)=>{
+  res.send({
+    activeStatus:true,
+    error:false
 
+  })
+})
 const server = http.createServer(app);
 
 
