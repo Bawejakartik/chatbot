@@ -1,28 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const messageslice = createSlice({
+const messageSlice = createSlice({
   name: "message",
   initialState: {
+    // store messages as an array for simpler append operations
     messages: [],
   },
-  // Inside your message reducer:
   reducers: {
     setMessages: (state, action) => {
-      // For fetching initial messages
-      state.messages = action.payload;
-    },
-    addMessage: (state, action) => {
-      // THIS IS CRUCIAL: Add the new message to the array
-      if (state.messages && state.messages.messages) {
-        state.messages.messages.push(action.payload);
+      // allow either full payload (object with messages) or an array
+      if (Array.isArray(action.payload)) {
+        state.messages = action.payload;
+      } else if (action.payload?.messages) {
+        state.messages = action.payload.messages;
       } else {
-        // Handle initial state if messages is empty
-        state.messages = { messages: [action.payload] };
+        state.messages = action.payload;
       }
     },
+    appendMessage: (state, action) => {
+      state.messages = state.messages || [];
+      state.messages.push(action.payload);
+    },
   },
-
 });
-
-export const { setMessages,addMessage } = messageslice.actions;
-export default messageslice.reducer;
+export const { setMessages, appendMessage } = messageSlice.actions;
+export default messageSlice.reducer;

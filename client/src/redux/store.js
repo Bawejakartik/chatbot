@@ -1,9 +1,8 @@
-
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 
-import userReducer from './usersslice';
-import messageReducer from './messageslice'
-import socketReducer  from './socketslice'
+import userReducer from "./usersslice";
+import messageReducer from "./messageslice";
+import socketReducer from "./socketslice";
 import {
   persistReducer,
   FLUSH,
@@ -15,12 +14,13 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
-
-  const persistConfig = {
-    key: "root",
-    version: 1,
-    storage,
-  };
+const persistConfig = {
+  key: "root",
+  version: 1,
+  storage,
+  // don't persist non-serializable socket object
+  blacklist: ["socket"],
+};
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -40,5 +40,4 @@ const store = configureStore({
     }),
 });
 
-
-export default store  ;
+export default store;

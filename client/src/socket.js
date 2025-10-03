@@ -4,8 +4,9 @@ let socket;
 
 export const initSocket = (userId) => {
   if (!socket) {
+    // server expects `UserId` (capital U) on the handshake query
     socket = io("http://localhost:4000", {
-      query: { userId },
+      query: { UserId: userId },
       withCredentials: true,
     });
   }

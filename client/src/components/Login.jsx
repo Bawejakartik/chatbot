@@ -62,6 +62,7 @@ catch(err){
               className="w-full input input-bordered h-10"
               type="text"
               placeholder="Enter your Username "
+              required
             />
           </div>
 
@@ -75,6 +76,7 @@ catch(err){
               className="w-full input input-bordered h-10"
               type="email"
               placeholder="Enter your Email"
+              required
             />
           </div>
 
@@ -88,6 +90,7 @@ catch(err){
               className="w-full input input-bordered h-10"
               type="password"
               placeholder="Enter your Password "
+              required
             />
           </div>
 

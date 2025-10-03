@@ -68,6 +68,7 @@ const Signup = () => {
               className="w-full input input-bordered h-10"
               type="text"
               placeholder="Enter your Name "
+              required 
             />
           </div>
 
@@ -81,6 +82,7 @@ const Signup = () => {
               className="w-full input input-bordered h-10"
               type="email"
               placeholder="Enter your Email"
+              required 
             />
           </div>
 
@@ -94,6 +96,7 @@ const Signup = () => {
               className="w-full input input-bordered h-10"
               type="text"
               placeholder="Enter your Username "
+              required 
             />
           </div>
 
@@ -107,6 +110,8 @@ const Signup = () => {
               className="w-full input input-bordered h-10"
               type="password"
               placeholder="Enter your Password "
+              required
+
             />
           </div>
 
@@ -121,6 +126,7 @@ const Signup = () => {
                 checked={user.gender === "male"}
                 onChange={(e) => setUser({ ...user, gender: e.target.value })}
                 className="radio mx-2"
+                
               />
             </div>
             <div className="flex items-center mx-2">
@@ -132,6 +138,8 @@ const Signup = () => {
                 checked={user.gender === "female"}
                 onChange={(e) => setUser({ ...user, gender: e.target.value })}
                 className="radio mx-2"
+              
+
               />
             </div>
           </div>
