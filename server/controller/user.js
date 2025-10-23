@@ -3,6 +3,8 @@ const User = require("../model/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
+
+
 exports.signup = async (req, res) => {
   try {
     const { fullname, username, email, password, gender } = req.body;
@@ -10,51 +12,48 @@ exports.signup = async (req, res) => {
     if (!fullname || !username || !email || !password || !gender) {
       return res.status(401).json({
         success: false,
-        message: "all fields are required",
-      });
-    }
-    const existinguser = await User.findOne({ email, username });
-    if (existinguser) {
-      return res.status(401).json({
-        success: false,
-        message: "user is already loggedin ",
+        message: "All fields are required",
       });
     }
 
-    let hashedpassword;
-    try {
-      hashedpassword = await bcrypt.hash(password, 10);
-    } catch (err) {
-      return res.status(500).json({
+    const existinguser = await User.findOne({ $or: [{ email }, { username }] });
+    if (existinguser) {
+      return res.status(401).json({
         success: false,
-        message: "error in hashing password",
+        message: "User already exists",
       });
     }
-    //profilephoto
-    const maleprofileimage = `https://avatar.iran.liara.run/public/boy?username=${username}`;
-    const femaleprofileimage = `https://avatar.iran.liara.run/public/girl?username=${username}`;
+
+    const hashedpassword = await bcrypt.hash(password, 10);
+
+   
+    const maleprofileimage = `https://api.dicebear.com/9.x/adventurer/svg?seed=${username}`;
+    const femaleprofileimage = `https://api.dicebear.com/9.x/adventurer-neutral/svg?seed=${username}`;
+
     const user = await User.create({
       fullname,
       username,
       gender,
       email,
-      profileimage: gender === "male" ? maleprofileimage : femaleprofileimage,
+      profileimage: gender.toLowerCase() === "male" ? maleprofileimage : femaleprofileimage,
       password: hashedpassword,
     });
 
     return res.status(200).json({
       user,
       success: true,
-      message: "user created successfully ",
+      message: "User created successfully",
     });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
       success: false,
-      message: "user not registered  try again later ",
+      message: "User not registered. Try again later.",
     });
   }
 };
+
+
 
 exports.login = async (req, res) => {
   try {

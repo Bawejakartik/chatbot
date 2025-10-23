@@ -9,6 +9,9 @@ const messageRouter = require("./routes/messageRoute");
 const db = require("./config/database");
 const { initSocket } = require("./socket/socket");
 const { error } = require("console");
+const passport = require("passport");
+require('./config/passport');
+const session = require("express-session");
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -16,13 +19,22 @@ const PORT = process.env.PORT || 4000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
-
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave:false,
+    saveUninitialized:false,
+  cookie:{secure:false},
+  })
+);
 app.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
   })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/api/v8", Authrouter);
 app.use("/api/v8/message", messageRouter);
