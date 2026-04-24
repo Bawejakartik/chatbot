@@ -27,15 +27,15 @@ app.use(
   cookie:{secure:false},
   })
 );
-app.use(
-  cors({
-    origin: 
-   [ "http://localhost:5173",
-    "https://genuinechatapp.vercel.app/", // local testing
-    "https://genuinechatapp-5wq0zq2da-kartiks-projects-786a5b7a.vercel.app"],
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "https://genuinechatapp.vercel.app",
+    "https://genuinechatapp-5wq0zq2da-kartiks-projects-786a5b7a.vercel.app"
+  ],
+  credentials: true
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
