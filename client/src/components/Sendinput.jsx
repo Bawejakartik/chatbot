@@ -17,7 +17,7 @@ const Sendinput = () => {
 
     try {
       const res = await axios.post(
-        `http://localhost:4000/api/v8/message/send/${SelectedUser?._id}`,
+        `https://chatbot-rj8b.onrender.com/api/v8/message/send/${SelectedUser?._id}`,
         { message },
         {
           withCredentials: true,

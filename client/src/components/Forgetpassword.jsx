@@ -13,7 +13,7 @@ const ForgetPassword = () => {
     setLoading(true);
     try {
       const res = await axios.post(
-        "http://localhost:4000/api/v8/forgetpassword",
+        "https://chatbot-rj8b.onrender.com/api/v8/forgetpassword",
         { email },
         { withCredentials: true }
       );

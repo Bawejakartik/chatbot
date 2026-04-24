@@ -18,7 +18,7 @@ if (token) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 const triggerlogin = () => {
-  window.location.href="http://localhost:4000/api/v8/google";
+  window.location.href="https://chatbot-rj8b.onrender.com/api/v8/google";
 }
   const [user, setUser] = useState({
     username: "",
@@ -31,7 +31,7 @@ const triggerlogin = () => {
   const onsubmithandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`http://localhost:4000/api/v8/login`, user, {
+      const res = await axios.post(`https://chatbot-rj8b.onrender.com/api/v8/login`, user, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -130,7 +130,7 @@ const triggerlogin = () => {
               type="button"
               onClick={() =>
                 (window.location.href =
-                  "http://localhost:4000/api/v8/auth/github")
+                  "https://chatbot-rj8b.onrender.com/api/v8/auth/github")
               }
               className="flex items-center justify-center w-full py-2 rounded-lg bg-gray-800 border border-gray-600 font-semibold hover:bg-gray-700 transition">
               <img

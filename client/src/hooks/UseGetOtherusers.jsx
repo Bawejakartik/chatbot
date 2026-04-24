@@ -12,7 +12,7 @@ const UseGetOtherusers = () => {
     const fetchotherusers = async () => {
       try {
         axios.defaults.withCredentials = true;
-        const res = await axios.get(`http://localhost:4000/api/v8/`);
+        const res = await axios.get(`https://chatbot-rj8b.onrender.com/api/v8/`);
         // console.log(res);
         //store
         // dispatch(setOtherUser(res.data));

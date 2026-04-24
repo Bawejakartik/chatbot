@@ -15,7 +15,7 @@ const { SelectedUser } = useSelector(store => store.user);
  try{
             axios.defaults.withCredentials =true; 
 const res = await axios.get(
-        `http://localhost:4000/api/v8/message/get/${SelectedUser?._id}`
+        `https://chatbot-rj8b.onrender.com/api/v8/message/get/${SelectedUser?._id}`
       );
       console.log(res);
      dispatch(setMessages(res.data));

@@ -18,7 +18,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        `http://localhost:4000/api/v8/signup`,
+        `https://chatbot-rj8b.onrender.com/api/v8/signup`,
         user,
         {
           headers: { "Content-Type": "application/json" },

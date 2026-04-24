@@ -31,7 +31,7 @@ const Sidebar = () => {
 
   const logoutHandler = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/api/v8/logout");
+      const res = await axios.get("https://chatbot-rj8b.onrender.com/api/v8/logout");
       navigate("/login");
       console.log(res);
 

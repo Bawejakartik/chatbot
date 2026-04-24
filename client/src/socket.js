@@ -5,7 +5,7 @@ let socket;
 export const initSocket = (userId) => {
   if (!socket) {
     // server expects `UserId` (capital U) on the handshake query
-    socket = io("http://localhost:4000", {
+    socket = io("https://chatbot-rj8b.onrender.com", {
       query: { UserId: userId },
       withCredentials: true,
     });

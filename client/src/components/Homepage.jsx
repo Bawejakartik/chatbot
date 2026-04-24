@@ -19,7 +19,7 @@ const Homepage = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/v8/me", {
+        const res = await fetch("https://chatbot-rj8b.onrender.com/api/v8/me", {
           method: "GET",
           credentials: "include", // ⬅️ very important to send cookie
         });
