@@ -30,7 +30,8 @@ app.use(
 app.use(
   cors({
     origin: 
-   [ "http://localhost:5173",  // local testing
+   [ "http://localhost:5173",
+    "https://genuinechatapp.vercel.app/", // local testing
     "https://genuinechatapp-5wq0zq2da-kartiks-projects-786a5b7a.vercel.app"],
     credentials: true,
   })
