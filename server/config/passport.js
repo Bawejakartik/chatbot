@@ -15,7 +15,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "http://localhost:4000/api/v8/auth/github/callback",
+      callbackURL: "https://chatbot-rj8b.onrender.com/api/v8/auth/github/callback",
     },
     async (accesstoken, refreshtoken, profile, done) => {
       try {
