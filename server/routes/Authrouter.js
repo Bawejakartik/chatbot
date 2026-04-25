@@ -78,9 +78,9 @@ route.get(
     );
 
     res.cookie("token", token, {
-      httponly: true,
+      httpNnly: true,
       secure: false,
-      sameSite: "lax",
+      sameSite: "none",
     }).header("Authorization", "Bearer " + token)
     .redirect(`https://genuinechatapp.vercel.app/homepage?token=${token}`);
   }
