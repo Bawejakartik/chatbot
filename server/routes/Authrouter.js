@@ -48,7 +48,7 @@ route.get(
       maxAge: 3600000,
     });
 
-    res.redirect(`http://localhost:5173/homepage?token=${token}`);
+    res.redirect(`https://genuinechatapp.vercel.app/homepage?token=${token}`);
   }
 );
 
@@ -63,13 +63,13 @@ route.get(
 route.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "http://localhost:5173/login",
+    failureRedirect: "https://genuinechatapp.vercel.app/login",
     session: false,
   }),
   (req, res) => {
     const user = req.user;
     if (!user) {
-      return res.redirect("http://localhost:5173/login");
+      return res.redirect("https://genuinechatapp.vercel.app/login");
     }
     const token = jwt.sign(
       { id: user._id, email: user.email },
@@ -82,7 +82,7 @@ route.get(
       secure: false,
       sameSite: "lax",
     }).header("Authorization", "Bearer " + token)
-    .redirect(`http://localhost:5173/homepage?token=${token}`);
+    .redirect(`https://genuinechatapp.vercel.app/homepage?token=${token}`);
   }
 );
 
