@@ -8,6 +8,7 @@ export const initSocket = (userId) => {
     socket = io("https://chatbot-rj8b.onrender.com", {
       query: { UserId: userId },
       withCredentials: true,
+      transports: ["polling", "websocket"], 
     });
   }
   return socket;

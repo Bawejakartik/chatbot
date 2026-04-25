@@ -9,6 +9,7 @@ const initSocket = (server) => {
       methods: ["GET", "POST"],
       credentials: true,
     },
+     transports: ["polling", "websocket"],
   });
 
   io.on("connection", (socket) => {
@@ -28,7 +29,11 @@ const initSocket = (server) => {
 
     socket.on("disconnect", () => {
       console.log("User disconnected:", socket.id);
+
+      if(UserId){
       delete usersocketmap[UserId];
+      }
+
       io.emit("getOnlineUsers", Object.keys(usersocketmap));
     });
   });
