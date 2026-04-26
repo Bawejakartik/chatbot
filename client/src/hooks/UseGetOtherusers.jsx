@@ -28,6 +28,7 @@
 // export default UseGetOtherusers;
 
 
+// UseGetOtherusers.js
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import axios from "axios";
@@ -39,25 +40,40 @@ const UseGetOtherusers = () => {
   useEffect(() => {
     const fetchotherusers = async () => {
       try {
-        const token = localStorage.getItem("token"); // 🔥 GET TOKEN
+        const token = localStorage.getItem("token");
+        
+        // 🔥 CHECK IF TOKEN EXISTS
+        if (!token) {
+          console.warn("No token found - user not authenticated");
+          return;
+        }
 
         const res = await axios.get(
           "https://chatbot-rj8b.onrender.com/api/v8/",
           {
             headers: {
-              Authorization: `Bearer ${token}`, // 🔥 SEND TOKEN
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
             },
+            withCredentials: true, // For cookies if needed
           }
         );
 
+        console.log("Users fetched:", res.data);
         dispatch(setOtherUsers(res.data.otheruser || []));
       } catch (err) {
-        console.log("Error fetching users:", err);
+        console.error("Error fetching users:", err.response?.data || err.message);
+        
+        // 🔥 IF 401, TOKEN IS INVALID - CLEAR IT
+        if (err.response?.status === 401) {
+          localStorage.removeItem("token");
+          console.log("Token invalid, cleared from storage");
+        }
       }
     };
 
     fetchotherusers();
-  }, []);
+  }, [dispatch]); // Added dispatch to dependency array
 
   return null;
 };

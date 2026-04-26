@@ -23,7 +23,7 @@ const Otheruser = ({ user }) => {
         {/* Avatar */}
         <div className={`avatar ${isOnline ? "online" : ""}`}>
           <div className="w-10 rounded-full">
-            <img src={user?.profilephoto} alt={user?.fullname} />
+            <img src={user?.profileimage} alt={user?.fullname} />
           </div>
         </div>
 

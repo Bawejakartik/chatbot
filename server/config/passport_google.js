@@ -9,7 +9,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://chatbot-rj8b.onrender.com/api/v8/google/callback"
+      callbackURL: "http://localhost:4000/api/v8/google/callback"
     },
     async (accessToken, refreshToken, profile, done) => {
       try {

@@ -1,5 +1,5 @@
 
-import React, {   useState } from "react";
+import React, {   useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -9,6 +9,16 @@ import { setAuthUser } from "../redux/usersslice";
 const Login = () => {
   const urlParams = new URLSearchParams(window.location.search);
 const token = urlParams.get('token');
+const error = urlParams.get('error');
+
+// Handle OAuth errors
+useEffect(() => {
+  if (error) {
+    toast.error(decodeURIComponent(error));
+    // Clean up URL
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+}, [error]);
 
 if (token) {
   document.cookie = `token=${token}; path=/;`;

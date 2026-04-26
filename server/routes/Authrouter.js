@@ -24,7 +24,7 @@ route.get(
 route.get(
   "/auth/github/callback",
   passport.authenticate("github", {
-    failureRedirect: "/login",
+    failureRedirect: `http://localhost:5173/login?error=${encodeURIComponent("GitHub authentication failed")}`,
     session: false,
   }),
 
@@ -33,7 +33,7 @@ route.get(
 
     if (!user) {
       console.log("no user from the github strategy ");
-      return res.redirect("/login");
+      return res.redirect(`http://localhost:5173/login?error=${encodeURIComponent("GitHub authentication failed")}`);
     }
 
     const token = jwt.sign(
@@ -48,7 +48,7 @@ route.get(
       maxAge: 3600000,
     });
 
-    res.redirect(`https://genuinechatapp.vercel.app/homepage?token=${token}`);
+    res.redirect(`http://localhost:5173/homepage?token=${token}`);
   }
 );
 
@@ -63,13 +63,13 @@ route.get(
 route.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "https://genuinechatapp.vercel.app/login",
+    failureRedirect: `http://localhost:5173/login?error=${encodeURIComponent("Google authentication failed")}`,
     session: false,
   }),
   (req, res) => {
     const user = req.user;
     if (!user) {
-      return res.redirect("https://genuinechatapp.vercel.app/login");
+      return res.redirect(`http://localhost:5173/login?error=${encodeURIComponent("Google authentication failed")}`);
     }
     const token = jwt.sign(
       { id: user._id, email: user.email },
@@ -79,10 +79,10 @@ route.get(
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: false,
+      sameSite: "lax",
     }).header("Authorization", "Bearer " + token)
-    .redirect(`https://genuinechatapp.vercel.app/homepage?token=${token}`);
+    .redirect(`http://localhost:5173/homepage?token=${token}`);
   }
 );
 
