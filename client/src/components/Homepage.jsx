@@ -4,14 +4,15 @@ import Sidebar from './Sidebar';
 import Message from './Message';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
+import { initSocket } from '../socket';
+import { setSocket } from '../redux/socketslice';
 const Homepage = () => {
   const { authUser } = useSelector(store => store.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // 🔥 STEP 1: Extract token from URL and store in localStorage
+    
     const params = new URLSearchParams(window.location.search);
     const tokenFromUrl = params.get("token");
 
@@ -21,7 +22,7 @@ const Homepage = () => {
 
     const fetchUser = async () => {
       try {
-        const token = localStorage.getItem("token"); // 🔥 get token
+        const token = localStorage.getItem("token"); 
 
         if (!token) {
           navigate("/login");
@@ -31,7 +32,7 @@ const Homepage = () => {
         const res = await fetch("https://chatbot-rj8b.onrender.com/api/v8/me", {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`, // 🔥 send token
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -39,6 +40,10 @@ const Homepage = () => {
 
         if (data.success) {
           dispatch({ type: "SET_AUTH_USER", payload: data.user });
+
+          const newSocket = initSocket(data.user._id);
+          dispatch(setSocket(newSocket));
+          
         } else {
           navigate("/login");
         }
